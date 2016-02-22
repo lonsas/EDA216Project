@@ -11,11 +11,12 @@ public class Main {
 
 	}
 	public Main() {
+		Database db = new Database();
 		JFrame f = new JFrame("Crusty Cookies");
 		JTabbedPane tabbedPane = new JTabbedPane();
 		f.getContentPane().add(tabbedPane);
-		tabbedPane.addTab("Production", new ProductionTab());
-
+		tabbedPane.addTab("Production", new ProductionTab(db));
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
 		f.setVisible(true);
 	}
