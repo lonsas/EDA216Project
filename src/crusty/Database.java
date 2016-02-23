@@ -9,4 +9,9 @@ public class Database {
 		return null;
 	}
 
+	public ArrayList<String> getIngredients() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

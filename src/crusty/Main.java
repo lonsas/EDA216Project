@@ -1,8 +1,7 @@
 package crusty;
 
-import java.awt.*;
-import javax.swing.*;
-import se.datadosen.component.RiverLayout;
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
 
 public class Main {
 
@@ -10,18 +9,17 @@ public class Main {
 		new Main();
 
 	}
+
 	public Main() {
 		Database db = new Database();
 		JFrame f = new JFrame("Crusty Cookies");
 		JTabbedPane tabbedPane = new JTabbedPane();
 		f.getContentPane().add(tabbedPane);
 		tabbedPane.addTab("Production", new ProductionTab(db));
+		tabbedPane.addTab("Block", new BlockedTab(db));
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
 		f.setVisible(true);
 	}
 
 }
-
-
-
