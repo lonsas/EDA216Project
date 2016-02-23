@@ -17,6 +17,7 @@ public class Main {
 		f.getContentPane().add(tabbedPane);
 		tabbedPane.addTab("Production", new ProductionTab(db));
 		tabbedPane.addTab("Block", new BlockedTab(db));
+		tabbedPane.addTab("Search", new SearchTab(db));
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
 		f.setVisible(true);
