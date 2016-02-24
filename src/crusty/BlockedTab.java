@@ -2,11 +2,14 @@ package crusty;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -22,6 +25,7 @@ public class BlockedTab extends JPanel {
 	private JButton btnSearch;
 	private JTextArea taFound;
 	private JButton btnBlock;
+	private ArrayList<String> pallets;
 
 	private Database db;
 
@@ -38,21 +42,41 @@ public class BlockedTab extends JPanel {
 		add(topPane(), BorderLayout.NORTH);
 		add(new JScrollPane(taFound), BorderLayout.CENTER);
 		add(btnBlock, BorderLayout.SOUTH);
+		
+		btnBlock.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(pallets!=null){
+					int sel=JOptionPane.showConfirmDialog(null, "Are you sure you want to block the selected pallets");
+					if(sel==0)
+						db.block(pallets);
+				}else
+					JOptionPane.showMessageDialog(null, "Please search for pallets first", "Error", JOptionPane.ERROR_MESSAGE);
+				
+			}
+		});
 
+		fillCookieList();
+		fillIngredientList();
 	}
 
 	public void fillCookieList() {
 		cbCookie.removeAllItems();
 		ArrayList<String> cookies = db.getCookies();
-		for (String cookie : cookies)
-			cbCookie.addItem(cookie);
+		cbCookie.addItem("All");
+		if (cookies != null)
+			for (String cookie : cookies)
+				cbCookie.addItem(cookie);
 	}
 
 	public void fillIngredientList() {
 		cbIngredient.removeAllItems();
-		ArrayList<String> cookies = db.getIngredients();
-		for (String cookie : cookies)
-			cbIngredient.addItem(cookie);
+		ArrayList<String> ingredients = db.getIngredients();
+		cbIngredient.addItem("All");
+		if (ingredients != null)
+			for (String ingredient : ingredients)
+				cbIngredient.addItem(ingredient);
 	}
 
 	private JPanel topPane() {
@@ -74,6 +98,34 @@ public class BlockedTab extends JPanel {
 		pane.add(new JLabel("Cookie:", SwingConstants.CENTER));
 		pane.add(cbCookie);
 		pane.add(btnSearch);
+
+		btnClear.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tfFrom.setText("");
+				tfTo.setText("");
+				cbIngredient.setSelectedIndex(0);
+				cbCookie.setSelectedIndex(0);
+
+			}
+		});
+		
+		btnSearch.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String from = tfFrom.getText();
+				String to = tfTo.getText();
+				String ingredient = (String) cbIngredient.getSelectedItem();
+				String cookie = (String) cbCookie.getSelectedItem();
+				pallets =  db.getPallets(from, to, cookie, ingredient);
+				taFound.setText("");
+				if(pallets!=null)
+					for(String pallet:pallets)
+						taFound.append(pallet+"\n");
+			}
+		});
 
 		return pane;
 

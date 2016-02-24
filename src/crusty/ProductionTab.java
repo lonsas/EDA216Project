@@ -1,11 +1,14 @@
 package crusty;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -17,6 +20,8 @@ public class ProductionTab extends JPanel {
 	private DefaultListModel<String> cookieListModel;
 	private JList<String> cookieList;
 	private Database db;
+	
+	
 	public ProductionTab(Database db) {
 		this.db = db;
 		cookieListModel = new DefaultListModel<String>();
@@ -30,7 +35,24 @@ public class ProductionTab extends JPanel {
 		add("vfill", cookiePane);
 		add(new JLabel("Number to produce:"));
 		add(insertNumber);
-		add(new JButton("Produce"));
+		
+		JButton btnProduce = new JButton("Produce");
+		add(btnProduce);
+		
+		btnProduce.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String cookie = cookieList.getSelectedValue();
+				try{
+					int amount = Integer.parseInt(insertNumber.getText());
+					db.produce(cookie, amount);
+				}catch(NumberFormatException err){
+					JOptionPane.showMessageDialog(null, "Please enter a number", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
 	}
 	public void fillCookieList() {
 		cookieListModel.removeAllElements();

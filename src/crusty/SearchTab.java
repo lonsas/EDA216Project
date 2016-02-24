@@ -2,8 +2,12 @@ package crusty;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -37,6 +41,24 @@ public class SearchTab extends JPanel {
 
 		pane.add(tfId);
 		pane.add(btnSearch);
+		
+		btnSearch.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try{
+					int id = Integer.parseInt(tfId.getText());
+					ArrayList<String> pallets = db.getPallet(id);
+					taResult.setText("");
+					if(pallets!=null)
+						for(String pallet:pallets)
+							taResult.append(pallet+"\n");
+				}catch(NumberFormatException err){
+					JOptionPane.showMessageDialog(null, "Please enter a number as Id", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
 
 		return pane;
 	}
