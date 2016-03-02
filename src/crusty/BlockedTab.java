@@ -52,7 +52,7 @@ public class BlockedTab extends JPanel {
 					if(sel==0)
 						db.block(pallets);
 				}else
-					JOptionPane.showMessageDialog(null, "Please search for pallets first", "Error", JOptionPane.ERROR_MESSAGE);
+					error("Please search for pallets first");
 				
 			}
 		});
@@ -117,6 +117,14 @@ public class BlockedTab extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String from = tfFrom.getText();
 				String to = tfTo.getText();
+				if(!from.matches("\\d\\d\\d\\d-\\d\\d-\\d\\d")){
+					error("Wrong format on from date");
+					return;
+				}
+				if(!to.matches("\\d\\d\\d\\d-\\d\\d-\\d\\d")){
+					error("Wrong format on to date");
+					return;
+				}
 				String ingredient = (String) cbIngredient.getSelectedItem();
 				String cookie = (String) cbCookie.getSelectedItem();
 				pallets =  db.getPallets(from, to, cookie, ingredient);
@@ -129,6 +137,9 @@ public class BlockedTab extends JPanel {
 
 		return pane;
 
+	}
+	public void error(String s){
+		JOptionPane.showMessageDialog(null, s, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 }

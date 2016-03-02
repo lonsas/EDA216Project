@@ -54,12 +54,16 @@ public class SearchTab extends JPanel {
 						for(String pallet:pallets)
 							taResult.append(pallet+"\n");
 				}catch(NumberFormatException err){
-					JOptionPane.showMessageDialog(null, "Please enter a number as Id", "Error", JOptionPane.ERROR_MESSAGE);
+					error("Please enter a number as Id");
 				}
 				
 			}
 		});
 
 		return pane;
+	}
+	
+	public void error(String s){
+		JOptionPane.showMessageDialog(null, s, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 }

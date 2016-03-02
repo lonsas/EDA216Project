@@ -48,7 +48,7 @@ public class ProductionTab extends JPanel {
 					int amount = Integer.parseInt(insertNumber.getText());
 					db.produce(cookie, amount);
 				}catch(NumberFormatException err){
-					JOptionPane.showMessageDialog(null, "Please enter a number", "Error", JOptionPane.ERROR_MESSAGE);
+					error("Please enter a number");
 				}
 				
 			}
@@ -60,6 +60,10 @@ public class ProductionTab extends JPanel {
 		for(String cookie : cookies) {
 			cookieListModel.addElement(cookie);
 		}
+	}
+	
+	public void error(String s){
+		JOptionPane.showMessageDialog(null, s, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
 }
