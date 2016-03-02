@@ -35,10 +35,10 @@ create table RecipeIngredient(
 
 create table Pallet(
   palletId int AUTO_INCREMENT,
-  prodDate date,
+  prodDate datetime,
   recipeName varchar(20),
-  status varchar(10),
-  blocked boolean,
+  status varchar(10) DEFAULT "DEEPFREEZE", 
+  blocked boolean DEFAULT False,
   primary key(palletId),
   foreign key(recipeName) references Recipe(recipeName)
 );
