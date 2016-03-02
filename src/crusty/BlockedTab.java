@@ -25,7 +25,7 @@ public class BlockedTab extends JPanel {
 	private JButton btnSearch;
 	private JTextArea taFound;
 	private JButton btnBlock;
-	private ArrayList<String> pallets;
+	private ArrayList<Integer> pallets;
 
 	private Database db;
 
@@ -47,7 +47,7 @@ public class BlockedTab extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(pallets!=null){
+				if(pallets!=null && !pallets.isEmpty()){
 					int sel=JOptionPane.showConfirmDialog(null, "Are you sure you want to block the selected pallets");
 					if(sel==0)
 						db.block(pallets);
@@ -130,7 +130,7 @@ public class BlockedTab extends JPanel {
 				pallets =  db.getPallets(from, to, cookie, ingredient);
 				taFound.setText("");
 				if(pallets!=null)
-					for(String pallet:pallets)
+					for(Integer pallet:pallets)
 						taFound.append(pallet+"\n");
 			}
 		});

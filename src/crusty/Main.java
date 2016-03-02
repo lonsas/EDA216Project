@@ -12,6 +12,7 @@ public class Main {
 
 	public Main() {
 		Database db = new Database();
+		db.openConnection("db87", "troM54k#");
 		JFrame f = new JFrame("Crusty Cookies");
 		JTabbedPane tabbedPane = new JTabbedPane();
 		f.getContentPane().add(tabbedPane);

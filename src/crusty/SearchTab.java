@@ -13,6 +13,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import crusty.Database.Pallet;
+
 public class SearchTab extends JPanel {
 	private JTextField tfId;
 	private JButton btnSearch;
@@ -48,11 +50,10 @@ public class SearchTab extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try{
 					int id = Integer.parseInt(tfId.getText());
-					ArrayList<String> pallets = db.getPallet(id);
+					Pallet pallet = db.getPallet(id);
 					taResult.setText("");
-					if(pallets!=null)
-						for(String pallet:pallets)
-							taResult.append(pallet+"\n");
+					if(pallet!=null)
+						taResult.setText(pallet.toString());
 				}catch(NumberFormatException err){
 					error("Please enter a number as Id");
 				}

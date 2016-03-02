@@ -36,6 +36,8 @@ public class ProductionTab extends JPanel {
 		add(new JLabel("Number to produce:"));
 		add(insertNumber);
 		
+		fillCookieList();
+		
 		JButton btnProduce = new JButton("Produce");
 		add(btnProduce);
 		
