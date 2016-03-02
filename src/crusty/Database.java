@@ -117,7 +117,10 @@ public class Database {
 	}
 
 	public ArrayList<Integer> getPallets(String from, String to, String cookie, String ingredient) {
-		String sql = "SELECT palletId FROM pallet " + "WHERE prodDate < ? and prodDate > ? and recipeName = ?";
+		if(cookie.equals("All")) {
+			cookie = "%";
+		}
+		String sql = "SELECT palletId FROM pallet " + "WHERE prodDate < ? and prodDate > ? and recipeName LIKE ?";
 		ArrayList<Integer> pallets = new ArrayList<Integer>();
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
