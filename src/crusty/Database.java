@@ -1,7 +1,11 @@
 package crusty;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.sql.*;
 
 public class Database {
 	private Connection conn;
@@ -41,9 +45,8 @@ public class Database {
 	 */
 	public void closeConnection() {
 		try {
-			if (conn != null) {
+			if (conn != null)
 				conn.close();
-			}
 		} catch (SQLException e) {
 		}
 		conn = null;
@@ -64,18 +67,12 @@ public class Database {
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
+			while (rs.next())
 				cookies.add(rs.getString("recipeName"));
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return cookies;
-	}
-
-	public ArrayList<String> getIngredients() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public void produce(String cookie, int amount) {
@@ -87,12 +84,10 @@ public class Database {
 			ps.setInt(1, amount);
 			ps.setString(2, cookie);
 			ps.executeUpdate();
-			/*ResultSet rs = ps.getGeneratedKeys();
-			while (rs.next()) {
-				if (rs.getInt(0) < 0) {
-					throw new SQLException();
-				}
-			}*/
+			/*
+			 * ResultSet rs = ps.getGeneratedKeys(); while (rs.next()) { if
+			 * (rs.getInt(0) < 0) { throw new SQLException(); } }
+			 */
 			PreparedStatement ps2 = conn.prepareStatement(createPalletSQL);
 			ps2.setString(1, cookie);
 			ps2.executeUpdate();
@@ -116,10 +111,9 @@ public class Database {
 
 	}
 
-	public ArrayList<Integer> getPallets(String from, String to, String cookie, String ingredient) {
-		if(cookie.equals("All")) {
+	public ArrayList<Integer> getPallets(String from, String to, String cookie) {
+		if (cookie.equals("All"))
 			cookie = "%";
-		}
 		String sql = "SELECT palletId FROM pallet " + "WHERE prodDate < ? and prodDate > ? and recipeName LIKE ?";
 		ArrayList<Integer> pallets = new ArrayList<Integer>();
 		try {
@@ -128,9 +122,8 @@ public class Database {
 			ps.setString(2, from);
 			ps.setString(3, cookie);
 			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
+			while (rs.next())
 				pallets.add(rs.getInt("palletId"));
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
