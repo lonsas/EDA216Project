@@ -198,7 +198,7 @@ public class Database {
 
 		public String toString() {
 			return "Pallet Number: " + palNbr + "\nCookie: " + cookieName + "\nProduction Date: " + prodDate
-					+ "\nStatus: " + status + "\nBlocket: " + blocked;
+					+ "\nStatus: " + status + "\n"+ ((blocked)?"Blocked":"Not blocked");
 		}
 
 	}

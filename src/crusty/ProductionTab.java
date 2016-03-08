@@ -20,8 +20,7 @@ public class ProductionTab extends JPanel {
 	private DefaultListModel<String> cookieListModel;
 	private JList<String> cookieList;
 	private Database db;
-	
-	
+
 	public ProductionTab(Database db) {
 		this.db = db;
 		cookieListModel = new DefaultListModel<String>();
@@ -35,37 +34,42 @@ public class ProductionTab extends JPanel {
 		add("vfill", cookiePane);
 		add(new JLabel("Number to produce:"));
 		add(insertNumber);
-		
+
 		fillCookieList();
-		
+
 		JButton btnProduce = new JButton("Produce");
 		add(btnProduce);
-		
+
 		btnProduce.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String cookie = cookieList.getSelectedValue();
-				try{
-					int amount = Integer.parseInt(insertNumber.getText());
-					db.produce(cookie, amount);
-				}catch(NumberFormatException err){
-					error("Please enter a number");
+				if (!cookieList.isSelectionEmpty()) {
+					String cookie = cookieList.getSelectedValue();
+					try {
+						int amount = Integer.parseInt(insertNumber.getText());
+						db.produce(cookie, amount);
+					} catch (NumberFormatException err) {
+						error("Please enter a number");
+					}
 				}
-				
+				else{
+					error("Please select a cookie to produce");
+				}
 			}
 		});
 	}
+
 	public void fillCookieList() {
 		cookieListModel.removeAllElements();
 		ArrayList<String> cookies = db.getCookies();
-		for(String cookie : cookies) {
+		for (String cookie : cookies) {
 			cookieListModel.addElement(cookie);
 		}
 	}
-	
-	public void error(String s){
+
+	public void error(String s) {
 		JOptionPane.showMessageDialog(null, s, "Error", JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 }

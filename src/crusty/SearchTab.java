@@ -39,7 +39,7 @@ public class SearchTab extends JPanel {
 		pane.setLayout(new GridLayout(1, 2));
 
 		tfId = new JTextField();
-		btnSearch = new JButton("Search");
+		btnSearch = new JButton("Search pallet number");
 
 		pane.add(tfId);
 		pane.add(btnSearch);
@@ -50,10 +50,8 @@ public class SearchTab extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try{
 					int id = Integer.parseInt(tfId.getText());
-					Pallet pallet = db.getPallet(id);
-					taResult.setText("");
-					if(pallet!=null)
-						taResult.setText(pallet.toString());
+					search(id);
+					
 				}catch(NumberFormatException err){
 					error("Please enter a number as Id");
 				}
@@ -62,6 +60,13 @@ public class SearchTab extends JPanel {
 		});
 
 		return pane;
+	}
+	
+	public void search(int id){
+		Pallet pallet = db.getPallet(id);
+		taResult.setText("");
+		if(pallet!=null)
+			taResult.setText(pallet.toString());
 	}
 	
 	public void error(String s){

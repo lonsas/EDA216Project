@@ -16,9 +16,10 @@ public class Main {
 		JFrame f = new JFrame("Crusty Cookies");
 		JTabbedPane tabbedPane = new JTabbedPane();
 		f.getContentPane().add(tabbedPane);
+		SearchTab searchTab =  new SearchTab(db);
 		tabbedPane.addTab("Production", new ProductionTab(db));
-		tabbedPane.addTab("Block", new BlockedTab(db));
-		tabbedPane.addTab("Search", new SearchTab(db));
+		tabbedPane.addTab("Search", new BlockedTab(db, tabbedPane, searchTab));
+		tabbedPane.addTab("Show pallet",searchTab);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
 		f.setVisible(true);
