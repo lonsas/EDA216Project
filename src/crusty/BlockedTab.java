@@ -148,7 +148,7 @@ public class BlockedTab extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (pallets != null && !pallets.isEmpty()) {
 					int sel = JOptionPane.showConfirmDialog(null,
-							"Are you sure you want to block these pallets");
+							"You are about to block "+pallets.size()+" pallets", "Warning", JOptionPane.WARNING_MESSAGE);
 					if (sel == 0)
 						db.block(pallets);
 				} else
