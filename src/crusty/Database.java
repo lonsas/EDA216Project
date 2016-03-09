@@ -75,6 +75,11 @@ public class Database {
 		return cookies;
 	}
 
+	/**
+	 * Produces pallets of cookies
+	 * @param cookie name of cookie to produces
+	 * @param amount number of pallets to produce
+	 */
 	public void produce(String cookie, int amount) {
 		String produceSQL = "UPDATE ingredient NATURAL JOIN recipeIngredient SET stock=stock-amount*?*54 WHERE recipeName = ?";
 		String createPalletSQL = "INSERT INTO pallet " + "SET recipeName = ?, prodDate=NOW()+10*60";
@@ -114,6 +119,13 @@ public class Database {
 
 	}
 
+	/**
+	 * Searches for pallets
+	 * @param from From date
+	 * @param to To date
+	 * @param cookie cookie type to search for
+	 * @return List of palletIds
+	 */
 	public ArrayList<Integer> getPallets(String from, String to, String cookie) {
 		if (cookie.equals("All"))
 			cookie = "%";
@@ -133,19 +145,24 @@ public class Database {
 		return pallets;
 	}
 
+	/**
+	 * @param pallets Pallets to be blocked
+	 */
 	public void block(ArrayList<Integer> pallets) {
 
-		String sql = "UPDATE pallet " + "SET blocked=true " + "WHERE palletId IN (?)";
-		StringBuilder sb = new StringBuilder();
-		for (int palNbr : pallets) {
-			sb.append(palNbr);
-			sb.append(",");
+		StringBuilder sql = new StringBuilder("UPDATE pallet " + "SET blocked=true " + "WHERE palletId IN (");
+		for (int i = 0; i < pallets.size(); i++) {
+			sql.append('?');
+			sql.append(",");
 		}
-		sb.deleteCharAt(sb.length() - 1);
+		sql.deleteCharAt(sql.length() - 1);
+		sql.append(')');
 
 		try {
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, sb.toString());
+			PreparedStatement ps = conn.prepareStatement(sql.toString());
+			for (int i = 0; i < pallets.size(); i++) {
+				ps.setInt(i+1, pallets.get(i));
+			}
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -206,6 +223,11 @@ public class Database {
 
 	}
 
+	/**
+	 * Get pallet by palletId
+	 * @param palNbr palletId
+	 * @return
+	 */
 	public Pallet getPallet(int palNbr) {
 		String sql = "SELECT * FROM pallet WHERE palletId = ?";
 		Pallet pallet = null;
