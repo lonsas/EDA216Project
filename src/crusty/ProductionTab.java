@@ -49,6 +49,8 @@ public class ProductionTab extends JPanel {
 					try {
 						int amount = Integer.parseInt(insertNumber.getText());
 						db.produce(cookie, amount);
+						String m = amount + " " + cookie + (cookie.length()>6 && cookie.substring(cookie.length()-6).equals("cookie")?"":" cookie") + (amount==1?"":"s") + " will be baked";
+						JOptionPane.showMessageDialog(null, m);
 					} catch (NumberFormatException err) {
 						error("Please enter a number");
 					}
