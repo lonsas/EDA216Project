@@ -67,6 +67,8 @@ public class SearchTab extends JPanel {
 		taResult.setText("");
 		if(pallet!=null)
 			taResult.setText(pallet.toString());
+		else
+			JOptionPane.showMessageDialog(null, "Pallet " + id + " not found");
 	}
 	
 	public void error(String s){
