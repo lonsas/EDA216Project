@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -16,12 +15,14 @@ import javax.swing.JTextField;
 import crusty.Database.Pallet;
 
 public class SearchTab extends JPanel {
-	private JTextField tfId;
-	private JButton btnSearch;
 	private JTextArea taResult;
 
 	private Database db;
 
+	/**
+	 * Creates the info tab
+	 * @param db The database containing information about the cookies
+	 */
 	public SearchTab(Database db) {
 		this.db = db;
 
@@ -38,14 +39,17 @@ public class SearchTab extends JPanel {
 		JPanel pane = new JPanel();
 		pane.setLayout(new GridLayout(1, 2));
 
-		tfId = new JTextField();
-		btnSearch = new JButton("Search pallet number");
+		JTextField tfId = new JTextField();
+		JButton btnSearch = new JButton("Search pallet number");
 
 		pane.add(tfId);
 		pane.add(btnSearch);
 		
 		btnSearch.addActionListener(new ActionListener() {
 			
+			/**
+			 * Searches the database for the selected pallet id
+			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
@@ -62,6 +66,10 @@ public class SearchTab extends JPanel {
 		return pane;
 	}
 	
+	/**
+	 * Searches for an id and shows it in the info tab
+	 * @param id The id to search for
+	 */
 	public void search(int id){
 		Pallet pallet = db.getPallet(id);
 		taResult.setText("");
@@ -71,7 +79,7 @@ public class SearchTab extends JPanel {
 			JOptionPane.showMessageDialog(null, "Pallet " + id + " not found");
 	}
 	
-	public void error(String s){
+	private void error(String s){
 		JOptionPane.showMessageDialog(null, s, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 }
