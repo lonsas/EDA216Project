@@ -89,8 +89,11 @@ public class Database {
 			 * (rs.getInt(0) < 0) { throw new SQLException(); } }
 			 */
 			PreparedStatement ps2 = conn.prepareStatement(createPalletSQL);
-			ps2.setString(1, cookie);
-			ps2.executeUpdate();
+			for(int i = 0; i < amount; i++) {
+				ps2.setString(1, cookie);
+				ps2.addBatch();
+			}
+			ps2.executeBatch();
 			conn.commit();
 		} catch (SQLException e) {
 			try {
@@ -114,7 +117,7 @@ public class Database {
 	public ArrayList<Integer> getPallets(String from, String to, String cookie) {
 		if (cookie.equals("All"))
 			cookie = "%";
-		String sql = "SELECT palletId FROM pallet " + "WHERE prodDate < ? and prodDate > ? and recipeName LIKE ?";
+		String sql = "SELECT palletId FROM pallet " + "WHERE prodDate < DATE_ADD(?,INTERVAL 1 DAY) and prodDate >= ? and recipeName LIKE ?";
 		ArrayList<Integer> pallets = new ArrayList<Integer>();
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -197,7 +200,7 @@ public class Database {
 		}
 
 		public String toString() {
-			return "Pallet Number: " + palNbr + "\nCookie: " + cookieName + "\nProduction Date: " + prodDate
+			return "Pallet Number: " + palNbr + "\nCookie: " + cookieName + "\nProduction Time: " + prodDate
 					+ "\nStatus: " + status + "\n"+ ((blocked)?"Blocked":"Not blocked");
 		}
 
