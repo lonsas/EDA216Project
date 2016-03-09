@@ -26,15 +26,9 @@ import javax.swing.SwingConstants;
 import com.sun.org.apache.xml.internal.utils.PrefixResolverDefault;
 
 public class BlockedTab extends JPanel {
-	private JTextField tfFrom;
-	private JTextField tfTo;
 	private JComboBox<String> cbCookie;
-	private JButton btnClear;
-	private JButton btnSearch;
 	private DefaultListModel<String> resultListModel;
 	private JList<String> jlFound;
-	private JButton btnBlock;
-	private JButton btnInfo;
 
 	private ArrayList<Integer> pallets;
 
@@ -42,6 +36,12 @@ public class BlockedTab extends JPanel {
 	private JTabbedPane tp;
 	private SearchTab st;
 
+	/**
+	 * Creates the Search tab
+	 * @param db The database containing information about the cookies
+	 * @param tabbedPane The pane that the tabs are created in
+	 * @param searchTab The search tab
+	 */
 	public BlockedTab(Database db, JTabbedPane tabbedPane, SearchTab searchTab) {
 		this.db = db;
 		this.tp = tabbedPane;
@@ -61,7 +61,7 @@ public class BlockedTab extends JPanel {
 		fillCookieList();
 	}
 
-	public void fillCookieList() {
+	private void fillCookieList() {
 		cbCookie.removeAllItems();
 		ArrayList<String> cookies = db.getCookies();
 		cbCookie.addItem("All");
@@ -72,11 +72,11 @@ public class BlockedTab extends JPanel {
 
 	private JPanel topPane() {
 		JPanel pane = new JPanel(new GridLayout(2, 4));
-		tfFrom = new JTextField();
-		tfTo = new JTextField();
+		JTextField tfFrom = new JTextField();
+		JTextField tfTo = new JTextField();
 		cbCookie = new JComboBox<String>();
-		btnSearch = new JButton("Search");
-		btnClear = new JButton("Clear");
+		JButton btnSearch = new JButton("Search");
+		JButton btnClear = new JButton("Clear");
 
 		pane.add(new JLabel("From:", SwingConstants.CENTER));
 		pane.add(tfFrom);
@@ -93,6 +93,9 @@ public class BlockedTab extends JPanel {
 		tfTo.setText(date);
 		tfFrom.setText(date);
 
+		/**
+		 * Clears all search fields.
+		 */
 		btnClear.addActionListener(new ActionListener() {
 
 			@Override
@@ -106,6 +109,9 @@ public class BlockedTab extends JPanel {
 
 		btnSearch.addActionListener(new ActionListener() {
 
+			/**
+			 * Searches for the selected cookies produces between the selected dates.
+			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String from = tfFrom.getText();
@@ -136,14 +142,17 @@ public class BlockedTab extends JPanel {
 	private JPanel botPane() {
 		JPanel pane = new JPanel(new GridLayout(1, 2));
 
-		btnBlock = new JButton("Block found pallets");
-		btnInfo = new JButton("Information about selected pallet");
+		JButton btnBlock = new JButton("Block found pallets");
+		JButton btnInfo = new JButton("Information about selected pallet");
 
 		pane.add(btnBlock, BorderLayout.SOUTH);
 		pane.add(btnInfo);
 
 		btnBlock.addActionListener(new ActionListener() {
 
+			/**
+			 * Blocks all found pallets.
+			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (pallets != null && !pallets.isEmpty()) {
@@ -159,6 +168,9 @@ public class BlockedTab extends JPanel {
 
 		btnInfo.addActionListener(new ActionListener() {
 
+			/**
+			 * Searches the database for the selected pallet id.
+			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!jlFound.isSelectionEmpty()){
@@ -174,7 +186,7 @@ public class BlockedTab extends JPanel {
 		return pane;
 	}
 
-	public void error(String s) {
+	private void error(String s) {
 		JOptionPane.showMessageDialog(null, s, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 

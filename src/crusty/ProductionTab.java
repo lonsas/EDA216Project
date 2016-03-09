@@ -18,13 +18,16 @@ import se.datadosen.component.RiverLayout;
 
 public class ProductionTab extends JPanel {
 	private DefaultListModel<String> cookieListModel;
-	private JList<String> cookieList;
 	private Database db;
 
+	/**
+	 * Creates the Production tab
+	 * @param db The database containing information about the cookies.
+	 */
 	public ProductionTab(Database db) {
 		this.db = db;
 		cookieListModel = new DefaultListModel<String>();
-		cookieList = new JList<String>(cookieListModel);
+		JList<String> cookieList = new JList<String>(cookieListModel);
 		cookieList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		cookieList.setPrototypeCellValue("123456789012");
 		JScrollPane cookiePane = new JScrollPane(cookieList);
@@ -42,6 +45,9 @@ public class ProductionTab extends JPanel {
 
 		btnProduce.addActionListener(new ActionListener() {
 
+			/**
+			 * Produces the selected amount of the selected cookie.
+			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!cookieList.isSelectionEmpty()) {
@@ -49,7 +55,7 @@ public class ProductionTab extends JPanel {
 					try {
 						int amount = Integer.parseInt(insertNumber.getText());
 						db.produce(cookie, amount);
-						String m = amount + " " + cookie + (cookie.length()>6 && cookie.substring(cookie.length()-6).equals("cookie")?"":" cookie") + (amount==1?"":"s") + " will be baked";
+						String m = amount + " pallet" + (amount==1?"":"s") + " of " + cookie + (cookie.length()>6 && cookie.substring(cookie.length()-6).equals("cookie")?"":" cookie") + "s will be baked";
 						JOptionPane.showMessageDialog(null, m);
 					} catch (NumberFormatException err) {
 						error("Please enter a number");
@@ -62,7 +68,7 @@ public class ProductionTab extends JPanel {
 		});
 	}
 
-	public void fillCookieList() {
+	private void fillCookieList() {
 		cookieListModel.removeAllElements();
 		ArrayList<String> cookies = db.getCookies();
 		for (String cookie : cookies) {
@@ -70,7 +76,7 @@ public class ProductionTab extends JPanel {
 		}
 	}
 
-	public void error(String s) {
+	private void error(String s) {
 		JOptionPane.showMessageDialog(null, s, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
